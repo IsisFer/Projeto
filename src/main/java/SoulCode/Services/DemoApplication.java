@@ -1,4 +1,4 @@
-package com.example.demo;
+package SoulCode.Services;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
