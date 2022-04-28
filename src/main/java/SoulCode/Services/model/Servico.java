@@ -27,16 +27,26 @@ public class Servico {
     @Enumerated(EnumType.STRING)
     private StatusServico status;
 
+
+    //relacionamento de muitos para um
     @ManyToOne
     @JoinColumn(name = "idFuncionario")
     private Funcionario funcionario;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "idOrcamento", unique = true)
+    private Orcamento orcamento;
+
+    @ManyToOne
+    @JoinColumn(name = "idCliente")
+    private Cliente cliente;
 
     public Integer getIdServico() {
         return idServico;
     }
 
-    public void setIdServiço(Integer idServiço) {
-        this.idServico = idServiço;
+    public void setIdServico(Integer idServico) {
+        this.idServico = idServico;
     }
 
     public String getTitulo() {
@@ -79,5 +89,19 @@ public class Servico {
         this.funcionario = funcionario;
     }
 
+    public Orcamento getOrcamento() {
+        return orcamento;
+    }
 
+    public void setOrcamento(Orcamento orcamento) {
+        this.orcamento = orcamento;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 }

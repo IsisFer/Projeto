@@ -3,10 +3,16 @@ package SoulCode.Services.Controllers;
 import SoulCode.Services.Service.ServicoService;
 import SoulCode.Services.model.Servico;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 
 @RestController
 @RequestMapping("servicos")
@@ -25,7 +31,83 @@ public class ServicoController {
 
     @GetMapping("/servico/{idServico}")
     public ResponseEntity<Servico>  mostrarUmServico(@PathVariable Integer idServico){
-        Servico servico = servicoService.mostrarumServico(idServico);
+        Servico servico = servicoService.mostrarUmServico(idServico);
         return ResponseEntity.ok().body(servico);
     }
+
+    @GetMapping("/servicoFuncionario/{idFuncionario}")
+    public List<Servico>buscarServicosDoFuncionario(@PathVariable Integer idFuncionario){
+        List<Servico> servicos = servicoService.buscarServicosDoFuncionario(idFuncionario);
+        return servicos;
+    }
+
+//    @GetMapping("/servicoData2/{dataEntrada}")
+//    public List<Servico> buscarSevicoPelaData2(@PathVariable Date dataEntrada) {
+//        List<Servico> servicos = servicoService.buscarServicoPelaData(dataEntrada);
+//        return servicos;
+//    }
+
+    @GetMapping("/servicoData")
+    public List<Servico> buscarServicoPelaData(@RequestParam("dataEntrada") @DateTimeFormat (
+            iso = DateTimeFormat.ISO.DATE) Date dataEntrada) {
+        List<Servico> servicos = servicoService.buscarServicoPelaData(dataEntrada);
+        return servicos;
+    }
+
+    @GetMapping("/servicoIntervaloData")
+    public List<Servico> buscarServicoPorIntervaloData(@RequestParam("data1") @DateTimeFormat(
+            iso = DateTimeFormat.ISO.DATE) Date data1, @RequestParam("data2") @DateTimeFormat(
+            iso = DateTimeFormat.ISO.DATE) Date data2 ){
+        List<Servico> servicos = servicoService.buscarServicoPorIntevervaloData(data1, data2);
+        return servicos;
+    }
+
+    @GetMapping("/servicoStatus")
+    public List<Servico> buscarServicoPeloStatus(@RequestParam("status") String status) {
+     List<Servico> servicos = servicoService.buscarServicoPeloStatus(status);
+        return servicos;
+    }
+
+    @GetMapping("/servicoSemFuncionario")
+    public List<Servico> buscarServicoSemFuncionario(){
+        List<Servico> servicos = servicoService.buscarServicoSemFuncionario();
+        return servicos;
+    }
+
+    @PostMapping("/servico")
+    public ResponseEntity<Servico> inserirServico(@RequestBody Servico servico){
+        servico = servicoService.inserirServico(servico);
+        URI novaUri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(servico.getIdServico()).toUri();
+        return ResponseEntity.created(novaUri).build();
+    }
+
+    @PostMapping("/atribuirFuncionario/{idServico}/{idFuncionario}")
+    public ResponseEntity<Servico>  atribuirFuncionario(@PathVariable Integer idServico, @PathVariable Integer idFuncionario){
+        Servico servico = servicoService.atribuirFuncionario(idServico, idFuncionario);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/concluirServico/{idServico}")
+    public ResponseEntity<Servico> concluirServico(@PathVariable Integer idServico){
+        ServicoService.concluirServico(idServico);
+        return ResponseEntity.noContent().build();
+    }
+
+    //método delete para excluir um registro da tabela
+    @DeleteMapping("/servico/{idServico}")
+    public ResponseEntity<Void> deletarumServico(@PathVariable Integer idServico) {
+        servicoService.deletarUmServico(idServico);
+        return ResponseEntity.noContent().build();
+    }
+
+    //método put para editar um registro da tabela
+    @PutMapping("/servico/{idServico}/{idFuncionario}")
+    public ResponseEntity<Void> editarFuncionario(@PathVariable Integer idServico, @PathVariable Integer idFuncionario, @RequestBody Servico servico) {
+        servico.setIdServico(idServico);
+        servico = servicoService.editarServico(servico, idFuncionario);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

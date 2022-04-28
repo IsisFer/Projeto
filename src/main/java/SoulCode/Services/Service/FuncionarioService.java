@@ -59,6 +59,13 @@ public class FuncionarioService {
         funcionarioRepository.deleteById(idFuncionario);
     }
 
+    public Funcionario salvarFoto(Integer idFuncionario, String caminhoFoto) {
+        Funcionario funcionario = mostrarUmFuncionario(idFuncionario);
+        funcionario.setFoto(caminhoFoto);
+        return funcionarioRepository.save(funcionario);
+    }
+
+
 }
 
 
