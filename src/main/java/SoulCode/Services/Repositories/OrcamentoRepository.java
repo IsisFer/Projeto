@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface OrcamentoRepository extends JpaRepository<Orcamento, Integer> {
+public interface OrcamentoRepository extends JpaRepository<Orcamento,Integer>{
 
-    List<Orcamento> findByStatus(String Status);
+    @Query(value = "SELECT * FROM orcamento WHERE status = :status", nativeQuery = true)
+    List<Orcamento> findByStatus(String status);
 }

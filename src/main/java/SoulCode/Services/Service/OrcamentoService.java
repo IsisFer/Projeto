@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class OrcamentoService {
 
@@ -20,22 +21,23 @@ public class OrcamentoService {
     @Autowired
     ServicoRepository servicoRepository;
 
-    //método para trazer todos  os orcamentos cadastrados no db (findAll)
-    public List<Orcamento> mostrarTodosOrcamentos() {
+    // método para trazer todos os orçamento cadastrados no db (findAll)
+    public List<Orcamento> mostrarTodosOrcamentos(){
         return orcamentoRepository.findAll();
     }
 
+    // Método para trazer o orçamento pelo seu id
     public Orcamento mostrarUmOrcamento (Integer idOrcamento) {
         Optional<Orcamento> orcamento = orcamentoRepository.findById(idOrcamento);
         return orcamento.orElseThrow();
     }
 
-    //método para trazer os orçamentos de acordo com o status
-    public List<Orcamento>mostrarOcamentoPeloStatus(String status){
+    //Método para trazer os orçamentos de acordo com o status
+    public List<Orcamento> mostrarOrcamentosPeloStatus(String status){
         return orcamentoRepository.findByStatus(status);
     }
 
-    public Orcamento inserirOrcamento(Orcamento orcamento , Integer idServico) {
+    public Orcamento inserirOrcamento(Orcamento orcamento, Integer idServico) {
         orcamento.setIdOrcamento(idServico);
         orcamento.setStatus(StatusOrcamento.EMITIDO);
         orcamentoRepository.save(orcamento);
@@ -46,15 +48,16 @@ public class OrcamentoService {
         return orcamento;
     }
 
-    //servico para pagamento de um orcamento (liquidar um orcamento)- modificar o status do orcamento para Quitado
+    // serviço para pagamento de um orçamento (liquidar um orçamento) -
+    // modificar o status do orçamento para QUITADO
     public Orcamento quitarOrcamento(Integer idOrcamento) {
         Orcamento orcamento = mostrarUmOrcamento(idOrcamento);
         orcamento.setStatus(StatusOrcamento.QUITADO);
         return orcamentoRepository.save(orcamento);
     }
 
-    //servico para deletar um orcamento
-    public void excluirOrcamento(Integer idOrcamento){
+    // serviço para deletar um orçamento
+    public void excluirOrcamento(Integer idOrcamento) {
         Servico servico = servicoRepository.getById(idOrcamento);
         servico.setOrcamento(null);
         servico.setStatus(StatusServico.ARQUIVADO);
@@ -62,10 +65,17 @@ public class OrcamentoService {
         orcamentoRepository.deleteById(idOrcamento);
     }
 
-    //servico para  alteraçao dos  daods de um orcamento
-    public Orcamento editarOrcamento(Orcamento orcamento, Integer idOrcamento){
+    // serviço para alteração dos dados de um orçamento
+    public Orcamento editarOrcamento(Orcamento orcamento, Integer idOrcamento) {
         mostrarUmOrcamento(orcamento.getIdOrcamento());
         return orcamentoRepository.save(orcamento);
     }
-
 }
+
+
+
+
+
+
+
+

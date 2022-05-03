@@ -6,12 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-
 @Repository
-public interface FuncionarioRepository extends JpaRepository<Funcionario,Integer>{
+public interface FuncionarioRepository extends JpaRepository<Funcionario,Integer> {
 
     Optional<Funcionario> findByEmail(String email);
-
+    //findByNome
+    //findByFoto
     Optional<Funcionario> findByNomeAndEmail(String nome, String email);
+
 }
 

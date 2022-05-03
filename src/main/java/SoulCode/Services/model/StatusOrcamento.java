@@ -5,9 +5,10 @@ public enum StatusOrcamento {
     EMITIDO ("Emitido"),
     QUITADO ("Quitado");
 
+
     private String descricao;
 
-    private  StatusOrcamento(String descricao) {
+    private StatusOrcamento(String descricao) {
         this.descricao = descricao;
     }
 

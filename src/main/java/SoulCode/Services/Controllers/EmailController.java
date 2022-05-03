@@ -2,8 +2,8 @@ package SoulCode.Services.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Random;
 
@@ -18,14 +18,15 @@ public class EmailController {
     @GetMapping("/envioEmail/{email}")
     public String sendMail(@PathVariable String email) {
 
-        String letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        Random  random = new Random();
+        String letras = "ABCDEFGHIJKLMNOPQRSWY";
+
+        Random random = new Random();
         String senha = "";
 
         int index = 0;
 
-        for(int i = 0; i <9; i++) {
+        for(int i = 0; i < 9; i++) {
             index = random.nextInt(letras.length());
             senha += letras.substring(index, index + 1);
         }
@@ -37,9 +38,11 @@ public class EmailController {
         message.setSubject("Email de redefinição de senha");
 
         try {
+            mailSender.send(message);
             return "Email enviado com sucesso";
         } catch (Exception e) {
             return "Erro ao enviar o email";
         }
+
     }
 }

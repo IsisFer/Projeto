@@ -5,20 +5,16 @@ public enum StatusServico {
     RECEBIDO("Recebido"),
     ATRIBUIDO("Atribuido"),
     CONCLUIDO("Concluido"),
-    ARQUIVADO ("Arquivado");
+    ARQUIVADO("Arquivado");
 
     private String descricao;
 
-    private StatusServico(String descricao) {
+    StatusServico(String descricao){
         this.descricao = descricao;
     }
 
-    //get do atributo descricao
     public String getDescricao() {
         return descricao;
     }
-
-
-
 
 }

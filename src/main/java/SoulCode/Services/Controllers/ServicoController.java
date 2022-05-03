@@ -11,60 +11,58 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
 
+
+@CrossOrigin
 @RestController
 @RequestMapping("servicos")
-@CrossOrigin
 public class ServicoController {
 
     @Autowired
     ServicoService servicoService;
 
-    //mapeamento para mostrar todos os servicos
+    // o método get serve para fazer buscar no banco de dados
     @GetMapping("/servico")
-    public List<Servico> mostrarTodoServicos() {
+    public List<Servico> mostrarTodosServicos(){
         List<Servico> servicos = servicoService.mostrarTodosServicos();
         return servicos;
     }
 
     @GetMapping("/servico/{idServico}")
-    public ResponseEntity<Servico>  mostrarUmServico(@PathVariable Integer idServico){
-        Servico servico = servicoService.mostrarUmServico(idServico);
+    public ResponseEntity<Servico> buscarUmServico(@PathVariable Integer idServico){
+        Servico servico  = servicoService.mostrarUmServico(idServico);
         return ResponseEntity.ok().body(servico);
+
     }
 
     @GetMapping("/servicoFuncionario/{idFuncionario}")
-    public List<Servico>buscarServicosDoFuncionario(@PathVariable Integer idFuncionario){
+    public List<Servico> buscarServicosDoFuncionario(@PathVariable Integer idFuncionario){
+
         List<Servico> servicos = servicoService.buscarServicosDoFuncionario(idFuncionario);
         return servicos;
+
     }
 
-//    @GetMapping("/servicoData2/{dataEntrada}")
-//    public List<Servico> buscarSevicoPelaData2(@PathVariable Date dataEntrada) {
-//        List<Servico> servicos = servicoService.buscarServicoPelaData(dataEntrada);
-//        return servicos;
-//    }
-
+    //@RequestParam permite que os dados da requisação venham pelos parâmetros da requisição
     @GetMapping("/servicoData")
-    public List<Servico> buscarServicoPelaData(@RequestParam("dataEntrada") @DateTimeFormat (
-            iso = DateTimeFormat.ISO.DATE) Date dataEntrada) {
+    public List<Servico> buscarServicoPelaData(@RequestParam("dataEntrada") @DateTimeFormat(
+            iso = DateTimeFormat.ISO.DATE) Date dataEntrada){
         List<Servico> servicos = servicoService.buscarServicoPelaData(dataEntrada);
         return servicos;
+
     }
 
     @GetMapping("/servicoIntervaloData")
     public List<Servico> buscarServicoPorIntervaloData(@RequestParam("data1") @DateTimeFormat(
             iso = DateTimeFormat.ISO.DATE) Date data1, @RequestParam("data2") @DateTimeFormat(
             iso = DateTimeFormat.ISO.DATE) Date data2 ){
-        List<Servico> servicos = servicoService.buscarServicoPorIntevervaloData(data1, data2);
+        List<Servico> servicos = servicoService.buscarServicoPorIntervaloData(data1, data2);
         return servicos;
     }
 
     @GetMapping("/servicoStatus")
-    public List<Servico> buscarServicoPeloStatus(@RequestParam("status") String status) {
-     List<Servico> servicos = servicoService.buscarServicoPeloStatus(status);
+    public List<Servico> buscarServicoPeloStatus(@RequestParam("status") String status){
+        List<Servico> servicos = servicoService.buscarServicoPeloStatus(status);
         return servicos;
     }
 
@@ -82,32 +80,33 @@ public class ServicoController {
         return ResponseEntity.created(novaUri).build();
     }
 
-    @PostMapping("/atribuirFuncionario/{idServico}/{idFuncionario}")
-    public ResponseEntity<Servico>  atribuirFuncionario(@PathVariable Integer idServico, @PathVariable Integer idFuncionario){
-        Servico servico = servicoService.atribuirFuncionario(idServico, idFuncionario);
+    @PostMapping("/atribuirServico/{idServico}/{idFuncionario}")
+    public ResponseEntity<Servico> atribuirFuncionario(@PathVariable Integer idServico, @PathVariable Integer idFuncionario){
+        servicoService.atribuirFuncionario(idServico, idFuncionario);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/concluirServico/{idServico}")
     public ResponseEntity<Servico> concluirServico(@PathVariable Integer idServico){
-        ServicoService.concluirServico(idServico);
+        servicoService.concluirServico(idServico);
         return ResponseEntity.noContent().build();
+
     }
 
-    //método delete para excluir um registro da tabela
+    // método delete para excluir um registro da tabela
     @DeleteMapping("/servico/{idServico}")
-    public ResponseEntity<Void> deletarumServico(@PathVariable Integer idServico) {
+    public ResponseEntity<Void> deletarUmServico(@PathVariable Integer idServico){
         servicoService.deletarUmServico(idServico);
         return ResponseEntity.noContent().build();
     }
 
-    //método put para editar um registro da tabela
+
+    // método put para editar um registro da tabela
     @PutMapping("/servico/{idServico}/{idFuncionario}")
-    public ResponseEntity<Void> editarFuncionario(@PathVariable Integer idServico, @PathVariable Integer idFuncionario, @RequestBody Servico servico) {
+    public ResponseEntity<Void> editarFuncionario(@PathVariable Integer idServico, @PathVariable Integer idFuncionario, @RequestBody Servico servico){
         servico.setIdServico(idServico);
-        servico = servicoService.editarServico(servico, idFuncionario);
+        servico = servicoService.editarServico(servico,idFuncionario);
         return ResponseEntity.noContent().build();
     }
-
 
 }

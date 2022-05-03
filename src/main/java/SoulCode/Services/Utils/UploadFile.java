@@ -11,8 +11,11 @@ import java.nio.file.StandardCopyOption;
 
 public class UploadFile {
 
-    public static void salvarArquivo(String uploadDir, String filename, MultipartFile file) throws IOException {
+
+    public static void salvarArquivo(String uploadDir, String fileName, MultipartFile file) throws IOException {
+
         Path uploadPath = Paths.get(uploadDir);
+
         if(!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
@@ -20,11 +23,15 @@ public class UploadFile {
         // stream - fluxo de dados
         // InputStream - possibilita a leitura de algum dado em byte (byte por byte)
         try(InputStream inputStream = file.getInputStream()){
-            Path filePath = uploadPath.resolve(filename);
+
+            Path filePath = uploadPath.resolve(fileName);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+
         }
         catch(IOException e) {
-            throw new IOException("Não foi possivel enviar o seu arquivo");
+            throw new IOException("Não foi possível enviar o seu arquivo");
         }
+
     }
+
 }
